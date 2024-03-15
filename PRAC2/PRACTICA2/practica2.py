@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
 	# Noms dels arxius d'entrada i sortida. Excemples
-	video_input_file = './akiyo_cif.y4m'
-	video_output_file = './akiyo_mpeg.mpeg'
+	video_input_file = './frames/akiyo_cif.y4m'
+	video_output_file = './frames/akiyo_mpeg.mpeg'
 
 	# Comanda per a la compresio a MPEG1
 	command = [
