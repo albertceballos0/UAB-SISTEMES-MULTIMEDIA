@@ -5,6 +5,7 @@ from PIL import Image,ImageDraw  # necessari tenir instalar llibreria PILLOW
 import numpy as np
 import metrikz
 import time
+import matplotlib.pyplot as plt
 
 
 quantization_matrix =  [[16.,11.,10.,16.,24.,40.,51.,61.],
@@ -86,7 +87,7 @@ if __name__ == '__main__':
    
     frame1 = cv2.imread("frame1_gray.png")
     frame2 = cv2.imread("frame2_gray.png")
-    cv2.imshow('image',frame1)
+    plt.imshow('image',frame1)
     frame1=frame1[:,:,0]
     frame2=frame2[:,:,0]
   
@@ -113,6 +114,12 @@ if __name__ == '__main__':
     #
     #
 
+    def motion_vector(frame1,frame2):
+        for i in range(0,dim[0],8):
+            for j in range(0,dim[1],8):
+               actual_position.append([i, j])
+               
+        
     # GENERAR AQUI EL CODI DE VISUALITZACIO
     # crear una línia entre cada posició dels elements dels vectors actual_position i motion_vector que siguin diferents. ex. línia origen (16,32) a (8,32)
     # podeu fer servir  ImageDraw.Draw(img) i ImageDraw.line
