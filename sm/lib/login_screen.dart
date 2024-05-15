@@ -1,6 +1,4 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:sm/start_screen.dart';
 import '../../providers/userProvider.dart';
@@ -17,18 +15,12 @@ class _ScreenLogInState extends State<ScreenLogIn> {
   TextEditingController passwordController = TextEditingController();
   late String _pass;
   late String _username;
-  CameraDescription? firstCamera;
 
   @override
   void initState() {
     super.initState();
-    initializeCam();
   }
-  Future<void> initializeCam() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    List<CameraDescription> cameras = await availableCameras();
-    firstCamera = cameras.first ;
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +87,7 @@ class _ScreenLogInState extends State<ScreenLogIn> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (
-                              context) => ScreenStart(camera: firstCamera,)),
+                              context) => ScreenStart()),
                         );
                       }
                     });
@@ -106,7 +98,7 @@ class _ScreenLogInState extends State<ScreenLogIn> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (
-                      context) => ScreenStart(camera: firstCamera)),
+                      context) => ScreenStart()),
                 );
               },
               child: Text(

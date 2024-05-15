@@ -1,19 +1,16 @@
 import 'dart:io';
-
-import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
+import 'package:sm/info_screen.dart';
 
-
-
+import 'hist_screen.dart';
+//import 'package:provider/provider.dart';
 
 class ScreenStart extends StatefulWidget {
-  final CameraDescription? camera;
 
-  const ScreenStart({super.key, required this.camera});
+  const ScreenStart({super.key});
 
   @override
   State<ScreenStart> createState() => _ScreenMenuState();
@@ -21,6 +18,8 @@ class ScreenStart extends StatefulWidget {
 
 class _ScreenMenuState extends State<ScreenStart> {
   late String user;
+  bool selected = false;
+  int _selectedIndex = 0;
   File? _image;
 
   Future getImage(ImageSource source) async {
@@ -31,6 +30,7 @@ class _ScreenMenuState extends State<ScreenStart> {
       final imageTemporary = File(image.path);
 
       setState(() {
+        this.selected = true;
         this._image = imageTemporary;
       });
     } on PlatformException catch (e){
@@ -42,12 +42,31 @@ class _ScreenMenuState extends State<ScreenStart> {
   void initState() {
     super.initState();
   }
-  int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+    index == 1 ?
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (
+          context) => const ScreenHist()),
+    ) : null;
+  }
+
+  void _newOne() {
+    setState(() {
+      selected = false;
+    });
+  }
+
+  void _search() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (
+          context) => ScreenInfo(image: _image!)),
+    );
   }
 
   @override
@@ -76,36 +95,67 @@ class _ScreenMenuState extends State<ScreenStart> {
             scrollDirection: Axis.vertical,
             children: [
               const SizedBox(
-                height: 20,
+                height: 100,
               ),
-                  Container(
-                    child:
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                       _image != null
-                         ? Image.file(_image!, width: 250, height: 250, fit: BoxFit.cover)
-                         : Image.asset(
-                          '../assets/plant.png',
-                          width: 250,
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        CustomButton(title: "Pick from gallery", icon: Icons.image_outlined, onClick: () => getImage(ImageSource.gallery) ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        CustomButton(title: "Pick from camera", icon: Icons.camera, onClick: () => getImage(ImageSource.camera) ),
-
-                      ]
-                  ),
-                  ),
-                ],),
+              pickImage(selected: selected)
+            ],
           ),
+      )
     );
   }
+
+  Widget pickImage( { required bool selected}){
+
+    return
+      !selected ?
+      Container(
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _image != null
+                ? Image.file(_image!, width: 250, height: 250, fit: BoxFit.cover)
+                : Image.asset(
+              '../assets/plant.png',
+              width: 250,
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            CustomButton(title: "Pick from gallery", icon: Icons.image_outlined, onClick: () => getImage(ImageSource.gallery) ),
+            const SizedBox(
+              height: 20,
+            ),
+            CustomButton(title: "Pick from camera", icon: Icons.camera, onClick: () => getImage(ImageSource.camera) ),
+
+          ]
+      ),
+    )
+    :
+    Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+        _image != null
+        ? Image.file(_image!, width: 250, height: 250, fit: BoxFit.cover)
+            : Image.asset(
+        '../assets/plant.png',
+        width: 250,
+        ),
+        const SizedBox(
+        height: 50,
+        ),
+        CustomButton(title: "NEW ONE", icon: Icons.replay, onClick: () => _newOne() ),
+        const SizedBox(
+        height: 20,
+        ),
+        CustomButton(title: "SEARCH", icon: Icons.search, onClick: () => _search() ),
+        ]
+        ),
+    );
+  }
+
 
   Widget CustomButton( {
     required String title,
@@ -113,14 +163,14 @@ class _ScreenMenuState extends State<ScreenStart> {
     required VoidCallback onClick
   }) {
     return Container(
-      width: 200,
+      width: 230,
       child: ElevatedButton(
         onPressed: onClick,
         child: Row(
           children: [
             Icon(icon),
             SizedBox(
-              width: 10,
+              width: 30,
             ),
             Text(title)
           ]
