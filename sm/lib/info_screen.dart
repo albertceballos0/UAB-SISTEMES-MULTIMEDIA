@@ -70,7 +70,7 @@ class _ScreenInfoState extends State<ScreenInfo> {
             scrollDirection: Axis.vertical,
             children: [
               const SizedBox(
-                height: 100,
+                height: 101,
               ),
               InfoCard(img: widget.image)
             ],
