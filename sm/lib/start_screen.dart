@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sm/info_screen.dart';
 
 import 'hist_screen.dart';
+import 'info_screen.dart';
 //import 'package:provider/provider.dart';
 
 class ScreenStart extends StatefulWidget {
@@ -21,6 +21,7 @@ class _ScreenMenuState extends State<ScreenStart> {
   bool selected = false;
   int _selectedIndex = 0;
   File? _image;
+  File imageFile = File('../assets/plant.png');
 
   Future getImage(ImageSource source) async {
     try {
@@ -58,6 +59,7 @@ class _ScreenMenuState extends State<ScreenStart> {
   void _newOne() {
     setState(() {
       selected = false;
+      _image = null;
     });
   }
 
@@ -95,7 +97,7 @@ class _ScreenMenuState extends State<ScreenStart> {
             scrollDirection: Axis.vertical,
             children: [
               const SizedBox(
-                height: 100,
+                height: 50,
               ),
               pickImage(selected: selected)
             ],
@@ -113,11 +115,13 @@ class _ScreenMenuState extends State<ScreenStart> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _image != null
-                ? Image.file(_image!, width: 250, height: 250, fit: BoxFit.cover)
-                : Image.asset(
-              '../assets/plant.png',
-              width: 250,
+            Container(
+              padding: const EdgeInsets.all(16.0),
+              height: 400,
+              width: 300,
+              child: _image != null
+                    ? Image.file(_image!, width: 300, height: 400, fit: BoxFit.cover)
+                    : Image(image: AssetImage('./assets/plant.png'))
             ),
             const SizedBox(
               height: 50,
@@ -138,11 +142,8 @@ class _ScreenMenuState extends State<ScreenStart> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
         _image != null
-        ? Image.file(_image!, width: 250, height: 250, fit: BoxFit.cover)
-            : Image.asset(
-        '../assets/plant.png',
-        width: 250,
-        ),
+        ? Image.file(_image!, width: 300, height: 400, fit: BoxFit.cover)
+            : Image(image: AssetImage('../assets/plant.png')),
         const SizedBox(
         height: 50,
         ),

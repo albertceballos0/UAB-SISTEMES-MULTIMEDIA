@@ -11,7 +11,6 @@ class userProvider extends ChangeNotifier{
   MyDataProvider() {
   }
 
-  String get token => _token;
   String get user => _user;
   int get id => _id;
 

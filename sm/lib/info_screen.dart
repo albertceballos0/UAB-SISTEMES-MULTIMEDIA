@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sm/start_screen.dart';
+import 'package:BOTANICAPP/start_screen.dart';
 
 import 'hist_screen.dart';
 //import 'package:provider/provider.dart';

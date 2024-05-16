@@ -2,7 +2,9 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sm/start_screen.dart';
+import 'package:BOTANICAPP/start_screen.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
 //import 'package:provider/provider.dart';
 
 class ScreenHist extends StatefulWidget {
@@ -53,21 +55,55 @@ class _ScreenHistState extends State<ScreenHist> {
           onTap: _onItemTapped,
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 30.0,
+          padding: const EdgeInsets.all(
+            30.0,
           ),
           child: ListView(
             scrollDirection: Axis.vertical,
-            children: const [
-              SizedBox(
-                height: 100,
-              ),
-              Text("HISTORY"),
+            children: [
+              courseLayout(context, 15),
             ],
           ),
         )
     );
   }
+
+  Widget courseLayout(BuildContext context, int number) {
+    var height = MediaQuery.of(context).size.height * 0.25;
+    return MasonryGridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 2,
+      mainAxisSpacing: 27,
+      crossAxisSpacing: 23,
+      itemCount: number,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          onTap: () {},
+          child: Container(
+              height: height,
+            color: Colors.teal,
+            child: Padding(
+              padding: EdgeInsets.all(14),
+              child: Column(
+                children: [
+                  Container(
+                      color: Colors.black12,
+                      height: height*0.7,
+                  ),
+                  SizedBox(height: height*0.05,),
+                  Text("MIAU")
+                ]
+              )
+
+            )
+          )
+        );
+      },
+    );
+  }
+
+
 }
 
 
