@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "sistemes-multimedia",
+  "private_key_id": "d08f240b913120190603bad60bceb384c851e0a5",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCzG/TFHEzCBMVx\nrTDdQnN15PsX+7y47O7+y1Up3xfLGxUl6DABPv9wLL7JRrJqtXuiVPYIMKnyyHCn\nhTOcDr06Q5/LoFyRqYq9Bsm2URHGzu4Qz+J8691DnzdMAK4nfQhNK4bDfZskjO0k\nQ+iU8olfggiiNerjHC7AyQF6JdniWPT9idW5YpbC3UuhrOcAFymv7hhseOLVfIme\nFEeFPGajiEx3KoDqP6UguXASameX9MGyBV/yzEA5FrlJRjUD+59GZS9yg0kGI4nW\nFYM2t8faARrUJS2xxlf6GwTYfvnMNXX8n/oe8EjMYiKlVVWG7Hun0QWNFsIErJaP\nUuiBja6TAgMBAAECggEACX0/hG/sOyfwjrDBKCp8noWRWLhxdmS11tGkA0dlZdEw\nrM+hN3evJdzLsN3qLFAi1ZC7G5JPIWSa31flykICUYNtWbxMcI/dy10AM9oWCdqY\nb1NBlHe/QyASLcMoIZcfaPiXjQ+VuCPamTNwhO+tSojuTIB0dNrfOT83sPvaEC1V\nUziFNOsYJ1NfRV8AmUDcqRTRpFBmyLpB4RUUj5TRVkf1VgXPH9ABdHPjkMypZaMs\n1ribWy0WVMjzKcG51mQ0Fe/beUTd01CNjEx1aQJUoIMq3pOmkPvil3WaYjtbSO45\njI1jmRgWtZA6Q99N87Q75+ErAwQQcVCaR2Q2f3F7kQKBgQDdLfPrb1tItigSbvAe\nz7OzeI+liDMSyz3WcNpBGDaYyuiJu374N0AI0iDhKUaetC3qIyuiSdeqKkIu/z0N\nCT+fQjeNkKnvFEyYP35xGEoXRDCjx4+pItfWg0W+UFz51XXHLqYCxFak5x7GFFCt\nGqJSacyOsnllPz4foahrVfiYgwKBgQDPTnj+fth4IVzKWl8Mw0v8Qpbu99US0R0x\nxOpGxGm5tflh1GuJ241fQAJSR3WiW0MHPm2l72hm4XQq7grO4aBnB7vWg/qe7fcs\naRYgq6OTZmjJM8tROHm5tNl9WWuBsZo0kNW96GeLH6YlkcZhyjHVrJTI7PFt0uiH\nUj7XGJYUsQKBgQDSSsm61LKfDIpHFHF7ahG6lutFAJ1GxjSyObRZ5dKrLWkw4zMS\nfz2D5X3bduotJLTvA6eN8tV5dhpdItKCHYP/QO8eyye3J763ls76apSvUGdKoQgH\nURiUXVWnYDM2Wu1ThxfSU6jputF4lYIrQ8KHxw31st1XFW1Ul9hQzXnCTwKBgFzf\nGvVofjHTQG6m7c4Z8ACjFFsaTCqR5DJXtVzewT6hd4eMUmEAKuVxF5kkyl5h5DVq\nklS0XGE6v4A8BDuKeQGvRUdk+PIaSZFrwq4ANtfiGS+KNJu+YUoA6y5s0OzZU+wY\ntqjNZRW+qABMvkMxAgJnvoAFJmO9CM8W2XAjY5kBAoGARevWEYEO4pnDyqlalDUs\n3NjqN1fJe3Ur6feF6Kg6hL7J8LdIqHZ5Ddc4xqAAAyL7o96ImEuNj68xDhWrIv6w\nEMLlbF7iLGFnM/phudJyVNO8rRSj/qGUqddS7SY5A5D7LBjX7mJMzjNaXWtek4sn\nC3DfOiaURqCgXK4UH2b7q1Q=\n-----END PRIVATE KEY-----\n",
+  "client_email": "sistemes-multimedia@appspot.gserviceaccount.com",
+  "client_id": "109735774380107260975",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sistemes-multimedia%40appspot.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
