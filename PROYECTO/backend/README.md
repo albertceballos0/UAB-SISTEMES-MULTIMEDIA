@@ -37,3 +37,8 @@ Iniciar sesión y configurar: `./bin/gcloud init`
 Ya podemos utilizar nuestra api con curl o con postman
 
 `curl https://us-central1-sistemes-multimedia.cloudfunctions.net/myFunction`
+
+
+# Funcionaliades -> API con rutas /images/upload y /users/auth 
+
+Sube y autentifica usuarios en cloud sorage, gestionado todo mediante jwt 
