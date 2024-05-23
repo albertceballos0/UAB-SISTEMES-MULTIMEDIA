@@ -4,6 +4,13 @@ const { firestore } = require('../storage/storage');
 
 
 
+/**
+ * Creates a new user with the provided email and name.
+ * 
+ * @param {string} email - The email of the user.
+ * @param {string} name - The name of the user.
+ * @returns {Promise<boolean>} - A promise that resolves to true if the user is successfully created, otherwise false.
+ */
 const createUser = async (email, name) => {
   console.log('Registrando usuario:', email, name)
   try{
@@ -17,6 +24,12 @@ const createUser = async (email, name) => {
 };
 
 
+/**
+ * Authenticates a user based on their email.
+ *
+ * @param {string} email - The email of the user to authenticate.
+ * @returns {Promise<boolean>} - A promise that resolves to a boolean indicating whether the user is authenticated or not.
+ */
 const authUser = async (email) => {
   console.log('Autentificando usuario:', email)
   const userQuery = await firestore.collection('users').where('email', '==', email).get();

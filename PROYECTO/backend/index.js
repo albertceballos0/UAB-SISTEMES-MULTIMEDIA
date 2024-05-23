@@ -10,7 +10,7 @@ app.use(express.json());
 
 
 app.use('/users', userRoutes);
-app.use('/images', queryRoutes);
+app.use('/queries', queryRoutes);
 
 
 

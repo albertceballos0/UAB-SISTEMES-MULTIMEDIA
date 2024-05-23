@@ -39,6 +39,8 @@ Ya podemos utilizar nuestra api con curl o con postman
 `curl https://us-central1-sistemes-multimedia.cloudfunctions.net/myFunction`
 
 
-# Funcionaliades -> API con rutas /images/upload y /users/auth 
+# Funcionaliades -> API con rutas /queries/set, /queries/get y /users/auth 
 
-Sube y autentifica usuarios en cloud sorage, gestionado todo mediante jwt 
+#### Autentifica usuarios en cloud sorage, gestionado todo mediante jwt 
+#### Sube ficheros, gestionado con jwt para autenticar el usuario y guarda la query, además llama a api de info de la planta de la imagen
+#### Getter de queries en función del usuario del jwt.
