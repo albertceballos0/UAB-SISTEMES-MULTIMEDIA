@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:BOTANICAPP/user_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,23 +18,30 @@ class ScreenHist extends StatefulWidget {
 class _ScreenHistState extends State<ScreenHist> {
   late String user;
   bool selected = false;
-  int _selectedIndex = 1;
+  late int _selectedIndex;
 
   @override
   void initState() {
     super.initState();
+    _selectedIndex = 1;
+
   }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    index == 0 ?
+    if (index == 0) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (
-            context) => const ScreenStart()),
-      ) : null;
+        MaterialPageRoute(builder: (context) => const ScreenStart()),
+      );
+    } else if (index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ScreenUser()),
+      );
+    }
   }
 
   @override
@@ -49,6 +57,10 @@ class _ScreenHistState extends State<ScreenHist> {
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.archivebox),
               label: 'HISTORIAL',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle_outlined),
+              label: 'USER',
             ),
           ],
           currentIndex: _selectedIndex,

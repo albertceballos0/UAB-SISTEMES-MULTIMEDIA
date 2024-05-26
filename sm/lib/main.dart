@@ -1,10 +1,17 @@
+import 'package:BOTANICAPP/firebase_options.dart';
+import 'package:BOTANICAPP/google_login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:BOTANICAPP/providers/userProvider.dart';
 
 import 'login_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
       MultiProvider(
           providers: [

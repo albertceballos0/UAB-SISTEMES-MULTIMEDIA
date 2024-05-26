@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:BOTANICAPP/user_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,8 @@ import 'hist_screen.dart';
 
 class ScreenInfo extends StatefulWidget {
   final File image;
-  const ScreenInfo({super.key, required this.image});
+  final Map<String, dynamic> info;
+  const ScreenInfo({super.key, required this.image, required this.info});
 
   @override
   State<ScreenInfo> createState() => _ScreenInfoState();
@@ -18,35 +20,35 @@ class ScreenInfo extends StatefulWidget {
 class _ScreenInfoState extends State<ScreenInfo> {
   late String user;
   bool selected = false;
-  int _selectedIndex = 0;
-
-
+  late int _selectedIndex;
 
   @override
   void initState() {
     super.initState();
+    _selectedIndex = 0;
   }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    index == 0 ?
+    if (index == 1) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (
-            context) => const ScreenStart()),
-      ) :
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (
-          context) => const ScreenHist()),
-    );
+        MaterialPageRoute(builder: (context) => const ScreenHist()),
+      );
+    } else if (index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ScreenUser()),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    //user = context.watch<userProvider>().user;
+    var information = widget.info;
+
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
@@ -57,6 +59,10 @@ class _ScreenInfoState extends State<ScreenInfo> {
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.archivebox),
               label: 'HISTORIAL',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle_outlined),
+              label: 'USER',
             ),
           ],
           currentIndex: _selectedIndex,
@@ -72,7 +78,7 @@ class _ScreenInfoState extends State<ScreenInfo> {
               const SizedBox(
                 height: 101,
               ),
-              InfoCard(img: widget.image)
+              InfoCard(img: widget.image, name: information['bestMatch'])
             ],
           ),
         )
@@ -80,14 +86,36 @@ class _ScreenInfoState extends State<ScreenInfo> {
   }
 
   Widget InfoCard({
-    required File img
+    required File img,
+    required String name,
   }){
     return Container(
-      child: Column(
+        width:  MediaQuery.of(context).size.width * 0.8,
+        child: Column(
         children: [
-          Image.file(img, width: 250, height: 250, fit: BoxFit.cover),
+          Image.file(img, width: 300, height: 400, fit: BoxFit.cover),
           const SizedBox( height: 100,),
-          Text("namee")
+          Container(
+
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+            child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children:[
+                      Text(name)
+                  ]
+                )
+            )
+          )
         ],
       )
     );

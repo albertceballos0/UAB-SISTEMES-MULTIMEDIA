@@ -1,12 +1,17 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:BOTANICAPP/providers/userProvider.dart';
+import 'package:BOTANICAPP/user_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 import 'hist_screen.dart';
 import 'info_screen.dart';
-//import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 
 class ScreenStart extends StatefulWidget {
 
@@ -19,7 +24,7 @@ class ScreenStart extends StatefulWidget {
 class _ScreenMenuState extends State<ScreenStart> {
   late String user;
   bool selected = false;
-  int _selectedIndex = 0;
+  late int _selectedIndex;
   File? _image;
   File imageFile = File('../assets/plant.png');
 
@@ -42,18 +47,24 @@ class _ScreenMenuState extends State<ScreenStart> {
   @override
   void initState() {
     super.initState();
+    _selectedIndex = 0;
   }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    index == 1 ?
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (
-          context) => const ScreenHist()),
-    ) : null;
+    if (index == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ScreenHist()),
+      );
+    } else if (index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ScreenUser()),
+      );
+    }
   }
 
   void _newOne() {
@@ -63,12 +74,84 @@ class _ScreenMenuState extends State<ScreenStart> {
     });
   }
 
-  void _search() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (
-          context) => ScreenInfo(image: _image!)),
+  Future<void> _search(File file) async {
+    //String token = Provider.of<userProvider>(context, listen: false).token;
+    var fileBytes = await file.readAsBytes();
+
+    // Inicializa la solicitud multipart
+    var request = http.MultipartRequest(
+    'POST',
+    Uri.parse('https://my-api.plantnet.org/v2/identify/all?include-related-images=false&no-reject=false&lang=en&api-key=2b10L1tahU8SiL0Mt0la2DJBu'),
     );
+
+    // Añade los encabezados
+    request.headers['accept'] = 'application/json';
+    request.headers['Content-Type']= 'multipart/form-data';
+
+    // Añade el archivo a la solicitud
+    request.files.add(
+      http.MultipartFile(
+      'images', // Nombre del campo para el archivo según la API de PlantNet
+      file.openRead(),
+      await file.length(),
+      filename: file.path.split('/').last,
+      contentType: MediaType('image', 'jpeg'), // Ajusta el tipo MIME si es necesario
+      ),
+    );
+    try {
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        var responseBody = await response.stream.bytesToString();
+        Map<String, dynamic> responseMapped = json.decode(responseBody);
+        print(responseBody);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (
+              context) => ScreenInfo(image: _image!, info: responseMapped)),
+        );
+      } else {
+        print('Research failed. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+  Future<void> lol(File file)  async {
+    String token = Provider.of<userProvider>(context, listen: false).token;
+    var request = http.MultipartRequest('POST', Uri.parse('https://us-central1-sistemes-multimedia.cloudfunctions.net/myFunction/queries/set'));
+    request.headers['Authentication'] = token;
+    // Añade los encabezados
+    request.headers['accept'] = 'application/json';
+    request.headers['Content-Type']= 'multipart/form-data';
+
+    // Añade el archivo a la solicitud
+    request.files.add(
+      http.MultipartFile(
+        'images', // Nombre del campo para el archivo según la API de PlantNet
+        file.openRead(),
+        await file.length(),
+        filename: file.path.split('/').last,
+        contentType: MediaType('image', 'jpeg'), // Ajusta el tipo MIME si es necesario
+      ),
+    );
+
+    try {
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        var responseBody = await response.stream.bytesToString();
+        print(responseBody);
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (
+        context) => ScreenInfo(image: _image!, info: {},)),
+        );
+      } else {
+        print('Research failed. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 
   @override
@@ -84,6 +167,10 @@ class _ScreenMenuState extends State<ScreenStart> {
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.archivebox),
               label: 'HISTORIAL',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle_outlined),
+              label: 'USER',
             ),
           ],
           currentIndex: _selectedIndex,
@@ -151,7 +238,7 @@ class _ScreenMenuState extends State<ScreenStart> {
         const SizedBox(
         height: 20,
         ),
-        CustomButton(title: "SEARCH", icon: Icons.search, onClick: () => _search() ),
+        CustomButton(title: "SEARCH", icon: Icons.search, onClick: () => _search(_image!)),
         ]
         ),
     );
