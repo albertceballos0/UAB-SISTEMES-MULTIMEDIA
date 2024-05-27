@@ -21,6 +21,13 @@ class userProvider extends ChangeNotifier{
   String get token => _token;
   int get id => _id;
 
+  bool isUser(){
+    if (_user != null){
+      return true;
+    }
+    return false;
+  }
+
   Future<bool> handleGoogleSignIn() async {
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn();

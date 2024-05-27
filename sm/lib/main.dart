@@ -1,5 +1,5 @@
 import 'package:BOTANICAPP/firebase_options.dart';
-import 'package:BOTANICAPP/google_login_screen.dart';
+import 'package:BOTANICAPP/start_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightGreen),
         useMaterial3: true,
       ),
-      home: ScreenLogIn(),
+      home: Provider.of<userProvider>(context, listen: false).isUser() ? ScreenStart() : ScreenLogIn(),
     );
   }
 }
