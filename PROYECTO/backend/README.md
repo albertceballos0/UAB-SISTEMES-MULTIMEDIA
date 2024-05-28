@@ -38,7 +38,7 @@ Ya podemos utilizar nuestra api con curl o con postman
 
 `curl https://us-central1-sistemes-multimedia.cloudfunctions.net/myFunction`
 
-# Funcionaliades -> API con rutas /queries/set, /queries/get y /users/auth 
+# Funcionaliades
 
 - STATUS -> [INVALID_TOKEN, OK, ERROR]
 - if status == INVALID_TOKEN OR ERROR only message response
@@ -54,3 +54,34 @@ Ya podemos utilizar nuestra api con curl o con postman
 #### Autentifica usuarios en cloud sorage, gestionado todo mediante jwt .
 #### Getter y setter de queries para usuario de jwt.
 #### Todas las requests debent tener header authentication (JWTTOKEN) para validar todas las requests., excepto /users/auth que devolverá (JWTTOKEN)
+
+## DB NoSql
+
+Base de datos de firestore con 3 collections.
+
+1. count -> contador general 
+- - documento -> counterid 
+- - campo -> count : number (inicializar a 0)
+
+2. queries -> registro de queries, guarda info de todas las queries de la app + nombre de imagen en cloud storage
+- - documento -> nombre aleatorio generado automáticamente
+- - campos -> date : string (en js, const date = new Date.toDateString()), fileName: string (fileName de cloud storage en función de count), name: string (nombre de la planta)
+
+3. users -> registro de usuarios de la app
+- - documento -> generado aleatoriamente
+- - campos -> email : string (email del usuario totalemente único), count : number (contador de queries hechas por usuario) y queries: array (referencia a los documentos de las queries que pertenencen a cada usuario)
+
+
+## Configuración 
+
+- Archivos de configuración .env.ejemplo con variavles de entorno a confirugrar, provienen de google cloud storage.
+- Archivo de información de google cloud service account extraido de google cloud. Necesario para interactuar con tu firestore.
+
+## Puesta en marcha 
+
+1. Configurar.env y .json de service account
+2. 
+
+- - `pnpm install`
+- - `pnpm run dev` or `deploy gcloud`
+
