@@ -7,3 +7,5 @@ const userController = require('../controllers/userController');
 router.post('/auth', userController.authUser);         // Obtener todos los usuarios
 
 module.exports = router;
+
+

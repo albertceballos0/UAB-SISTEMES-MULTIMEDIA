@@ -38,7 +38,19 @@ Ya podemos utilizar nuestra api con curl o con postman
 
 `curl https://us-central1-sistemes-multimedia.cloudfunctions.net/myFunction`
 
+# Funcionaliades -> API con rutas /queries/set, /queries/get y /users/auth 
 
-# Funcionaliades -> API con rutas /images/upload y /users/auth 
+- STATUS -> [INVALID_TOKEN, OK, ERROR]
+- if status == INVALID_TOKEN OR ERROR only message response
 
-Sube y autentifica usuarios en cloud sorage, gestionado todo mediante jwt 
+
+1. POST /users/auth { email : "email@email.com" } -> { status, message, token } (OK or res.status(500))
+2. GET /queries/count -> { status, data : count } (ERROR -> no remains requests, INVALID_TOKEN -> token not valid, OK -> return count, res.status(500))
+
+3. GET /queries/get -> { status, fileName, data : [ date, fileName, name] } (INVALID_TOKEN -> token not valid, OK -> return queries, res.status(500))
+
+3. POST /queries/set { name : plantName } -> { status, message, data : [fileName, count, date]} (INVALID_TOKEN -> token not valid, ERROR -> body not valid, OK -> querie set correctly)
+
+#### Autentifica usuarios en cloud sorage, gestionado todo mediante jwt .
+#### Getter y setter de queries para usuario de jwt.
+#### Todas las requests debent tener header authentication (JWTTOKEN) para validar todas las requests., excepto /users/auth que devolverá (JWTTOKEN)

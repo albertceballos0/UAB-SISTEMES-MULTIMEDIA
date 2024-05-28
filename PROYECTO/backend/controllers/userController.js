@@ -3,16 +3,23 @@ const {generateToken} = require('../hooks/auth');
 require('dotenv').config();
 
 
-exports.authUser = async (req, res) => {
+/**
+ * Authenticates a user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {void}
+ */
+const authUser = async (req, res) => {
   try {
-    const { email, name } = req.body;
+    const { email } = req.body;
     try{
 
         const user = await User.authUser(email);
 
         if (!user) {
             try{
-               const result = await User.createUser(email, name);
+               const result = await User.createUser(email);
 
                if(result){
                     console.log('Usuario registrado correctamente');
@@ -41,3 +48,5 @@ exports.authUser = async (req, res) => {
   }
   return;
 };
+
+module.exports = { authUser };
