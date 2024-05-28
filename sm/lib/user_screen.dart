@@ -46,7 +46,6 @@ class _ScreenUserState extends State<ScreenUser> {
   @override
   Widget build(BuildContext context) {
     _user = Provider.of<userProvider>(context).user!;
-
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

@@ -92,13 +92,7 @@ class _ScreenLogInState extends State<ScreenLogIn> {
                 ),
                 child: const Text('Log In'),
                 onPressed: () {
-                      Provider.of<userProvider>(context, listen: false).logIn(_email, _pass).then((conn) {
-                      if (conn) {
-                            Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => ScreenStart()),
-                            );
-                      }
-                  });
+
                 },
               )),
           TextButton(
@@ -217,17 +211,8 @@ class _ScreenLogInState extends State<ScreenLogIn> {
                   minimumSize: const Size.fromHeight(50),
                 ),
                 child: const Text('Register'),
-                onPressed: () {
-                  Provider.of<userProvider>(context, listen: false).logIn(_email, _pass).then((conn) {
-                    if (conn) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (
-                            context) => ScreenStart()),
-                      );
-                    }
-                  });
-                },
+                onPressed: () {}
+
               )),
           TextButton(
             onPressed: () {
