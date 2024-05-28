@@ -3,9 +3,10 @@ const router = express.Router();
 
 const upload = require('../hooks/multerConfig');
 
-const { setQueryController, getQueriesController } = require('../controllers/queryController');
+const { setQueryController, getQueriesController, getQueriesCount } = require('../controllers/queryController');
 
-router.post('/set', upload.single('image'), setQueryController);
+router.post('/set', setQueryController);
 router.get('/get', getQueriesController);
+router.get('/count', getQueriesCount);
 
 module.exports = router;

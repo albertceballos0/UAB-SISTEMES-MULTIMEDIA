@@ -1,4 +1,3 @@
-const jsonData = require("../sistemes-multimedia-d08f240b9131.json");
 const { firestore, admin } = require('../storage/storage');
 
 
@@ -16,6 +15,21 @@ const getCount = async () => {
   return null;
 };
 
+const getCountByEmail = async (email) => {
+
+  const userQuery = await firestore.collection('users').where('email', '==', email).get();
+  if (userQuery.empty) {
+    console.log('No se encontró el usuario:', email);
+    return null;
+  }
+  try{
+    const userDoc = userQuery.docs[0].data();
+    return userDoc['count'];
+  }catch(error){
+    console.error('Error al obtener el count:', error);
+    return null;
+  }
+}
 
 /**
  * Increments the count value in the 'counter' collection by 1.
@@ -56,11 +70,12 @@ const incrementCount = async () => {
  * @param {object} data - The data associated with the query.
  * @returns {Promise<boolean>} - A promise that resolves to true if the query is successfully saved and the user's document is updated, false otherwise.
  */
-const setQuery = async (email , fileName, data) => {
+const setQuery = async (email , fileName, date, name) => {
 
   const queryDocRef = await firestore.collection('queries').add({
     fileName: fileName,
-    data: data
+    date: date,
+    name: name
   });
 
   const userQuery = await firestore.collection('users').where('email', '==', email).get();
@@ -71,7 +86,8 @@ const setQuery = async (email , fileName, data) => {
   try{
     const userDocRef = userQuery.docs[0].ref;
     await userDocRef.update({
-      queries: admin.firestore.FieldValue.arrayUnion(queryDocRef)
+      queries: admin.firestore.FieldValue.arrayUnion(queryDocRef),
+      count : admin.firestore.FieldValue.increment(1),
     });
     return true;
   }catch(error){
@@ -89,12 +105,14 @@ const getQueries = async (email) => {
       return null;
     }
 
+
     const userDoc = userQuery.docs[0].data();
 
     const queryRefs = userDoc['queries'];
 
-    if (!queryRefs || queryRefs.length === 0) {
-      return null;
+    console.log('Referencias de las queries:', queryRefs);
+    if(!queryRefs){
+      return [];
     }
 
     // Obtener los documentos de las queries usando sus referencias
@@ -112,5 +130,6 @@ module.exports = {
   getCount,
   incrementCount,
   setQuery,
-  getQueries
+  getQueries,
+  getCountByEmail
 };
