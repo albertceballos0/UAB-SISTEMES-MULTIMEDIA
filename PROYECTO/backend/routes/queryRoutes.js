@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-const upload = require('../hooks/multerConfig');
-
 const { setQueryController, getQueriesController, getQueriesCount } = require('../controllers/queryController');
 
 router.post('/set', setQueryController);

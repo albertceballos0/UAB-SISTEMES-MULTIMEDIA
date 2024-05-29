@@ -110,7 +110,6 @@ const getQueries = async (email) => {
 
     const queryRefs = userDoc['queries'];
 
-    console.log('Referencias de las queries:', queryRefs);
     if(!queryRefs){
       return [];
     }

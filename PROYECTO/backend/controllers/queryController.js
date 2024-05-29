@@ -1,6 +1,20 @@
 const { incrementCount, setQuery, getQueries, getCountByEmail } = require('../models/queryModels');
 const { verifyToken } = require('../hooks/auth');
 require('dotenv').config();
+const { bucket } = require('../storage/storage');
+
+async function generateSignedUrl(fileName, expirationTime = 3600) {
+  const options = {
+    version: 'v4',
+    action: 'read',
+    expires: Date.now() + expirationTime * 1000, // Tiempo en milisegundos
+  };
+
+  const file = bucket.file(fileName);
+  const [url] = await file.getSignedUrl(options);
+
+  return url;
+}
 
 
 const getQueriesController = async (req, res) => {
@@ -14,7 +28,15 @@ const getQueriesController = async (req, res) => {
     if (!queries) {
       return res.status(500).send({ status: 'ERROR', message: 'Error al obtener las consultas' });
     }
-    return res.status(200).send({ status: 'OK', message: 'Consultas obtenidas correctamente', data: queries });
+
+    const updatedFiles = await Promise.all(queries.map(async (file) => {
+      if (file.fileName) {
+        file.fileName = await generateSignedUrl(file.fileName);
+      }
+      return file;
+    }));
+
+    return res.status(200).send({ status: 'OK', message: 'Consultas obtenidas correctamente', data: updatedFiles });
   } catch (error) {
     console.error('Error en getQueriesController:', error);
     return res.status(500).send({ status: 'ERROR', message: 'Error interno del servidor' });
@@ -34,10 +56,10 @@ const getQueriesCount = async (req, res) => {
       return res.status(500).send({ status: 'ERROR', message: 'Error al obtener el count' });
     }
 
-    if (count >= 10) {
+    if (count >= 1000) {
       return res.status(200).send({ status: 'ERROR', message: 'No quedan consultas' });
     }
-    return res.status(200).send({ status: 'OK', data: count });
+    return res.status(200).send({ status: 'OK', data: 1000 - count });
 
   } catch (error) {
     console.error('Error en getCount:', error);
@@ -50,7 +72,7 @@ const getQueriesCount = async (req, res) => {
 const setQueryController = async (req, res) => {
 
   if (!req.body.name) {
-    return res.status(200).send({ status: 'ERROR', message: 'Falta el nombre de la planta' });
+    return res.status(403).send({ status: 'ERROR', message: 'Falta el nombre de la planta' });
   }
 
   const { name } = req.body;
