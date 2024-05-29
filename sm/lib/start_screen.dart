@@ -105,13 +105,17 @@ class _ScreenMenuState extends State<ScreenStart> {
       if (response.statusCode == 200) {
         var responseBody = await response.stream.bytesToString();
         Map<String, dynamic> responseMapped = json.decode(responseBody);
-        print(responseBody);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (
               context) => ScreenInfo(image: _image!, info: responseMapped)),
         );
       } else {
+        setState(() {
+          selected = false;
+          _image = null;
+        });
+        //POP UP
         print('Research failed. Status code: ${response.statusCode}');
       }
     } catch (e) {

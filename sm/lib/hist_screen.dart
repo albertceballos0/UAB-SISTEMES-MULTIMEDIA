@@ -14,6 +14,8 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import 'info_screen2.dart';
+
 
 
 
@@ -153,7 +155,13 @@ class _ScreenHistState extends State<ScreenHist> {
       itemCount: all.length,
       itemBuilder: (context, index) {
         return GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (
+                  context) => ScreenInfo2(image: all[index]['fileName']!, info: all[index]['name'])),
+            );
+          },
           child: Container(
               height: height,
             color: Colors.teal,
@@ -162,14 +170,27 @@ class _ScreenHistState extends State<ScreenHist> {
               child: Column(
                 children: [
                   Container(
-                    color: Colors.black12,
                     height: height * 0.7,
-                    child: CachedNetworkImage(
-                      imageUrl: "", // Proporciona la URL de la imagen desde la lista 'all'
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => Center(child: CircularProgressIndicator()), // Muestra un indicador de carga mientras se descarga la imagen
-                      errorWidget: (context, url, error) => Icon(Icons.error), // Muestra un ícono de error si no se puede cargar la imagen
+                    child: Expanded(child: Image.network(
+                      all[index]['fileName'],
+                      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        } else {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                  : null,
+                            ),
+                          );
+                        }
+                      },
+                      errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                        return Text('Failed to load image');
+                      },
                     ),
+                  ),
                   ),
                   SizedBox(height: height*0.05,),
                 Expanded(
