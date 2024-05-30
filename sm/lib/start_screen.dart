@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'hist_screen.dart';
 import 'info_screen.dart';
@@ -115,7 +116,15 @@ class _ScreenMenuState extends State<ScreenStart> {
           selected = false;
           _image = null;
         });
-        //POP UP
+        Fluttertoast.showToast(
+            msg: "Error: Image not identified",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 5,
+            backgroundColor: Colors.redAccent,
+            textColor: Colors.black,
+            fontSize: 16.0
+        );
         print('Research failed. Status code: ${response.statusCode}');
       }
     } catch (e) {

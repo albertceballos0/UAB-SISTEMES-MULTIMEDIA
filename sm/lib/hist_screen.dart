@@ -146,7 +146,9 @@ class _ScreenHistState extends State<ScreenHist> {
 
   Widget courseLayout(BuildContext context, var all) {
     var height = MediaQuery.of(context).size.height * 0.25;
-    return MasonryGridView.count(
+    return  all.length == 0 ?
+        const Center( child: Text("There's no searches yet"))
+        : MasonryGridView.count(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: 2,
