@@ -264,7 +264,7 @@ class _ScreenMenuState extends State<ScreenStart> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(message),
+
             Container(
               padding: const EdgeInsets.all(16.0),
               height: 400,
@@ -272,6 +272,24 @@ class _ScreenMenuState extends State<ScreenStart> {
               child: _image != null
                     ? Image.file(_image!, width: 300, height: 400, fit: BoxFit.cover)
                     : Image(image: AssetImage('./assets/plant.png'))
+            ),
+            Container(
+            width: 230,
+            child: ElevatedButton(
+
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,          // Remove shadow/elevation
+                        shadowColor: Colors.transparent, // Remove shadow color
+                        side: BorderSide.none, // Remove border
+                      ),
+                      onPressed: () {},
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(message)
+                          ]
+                      ),
+                    ),
             ),
             const SizedBox(
               height: 50,

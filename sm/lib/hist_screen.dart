@@ -134,6 +134,27 @@ class _ScreenHistState extends State<ScreenHist> {
                   child: ListView(
                     scrollDirection: Axis.vertical,
                     children: [
+                      snapshot.data!.isEmpty ?
+                      Center(
+                        child: Container(
+                          width: 230,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,          // Remove shadow/elevation
+                              shadowColor: Colors.transparent, // Remove shadow color
+                              side: BorderSide.none, // Remove border
+                            ),
+                            onPressed: () {},
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("EMPTY HISTORY")
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                      :
                       courseLayout(context, snapshot.data),
                     ],
                   ),
@@ -147,7 +168,25 @@ class _ScreenHistState extends State<ScreenHist> {
   Widget courseLayout(BuildContext context, var all) {
     var height = MediaQuery.of(context).size.height * 0.25;
     return  all.length == 0 ?
-        const Center( child: Text("There's no searches yet"))
+         Center(
+             child: Container(
+              width: 230,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,          // Remove shadow/elevation
+                  shadowColor: Colors.transparent, // Remove shadow color
+                  side: BorderSide.none, // Remove border
+                ),
+                onPressed: () {},
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("EMPTY HISTORY")
+                    ]
+                ),
+              ),
+            ),
+        )
         : MasonryGridView.count(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
