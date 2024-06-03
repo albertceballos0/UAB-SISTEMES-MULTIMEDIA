@@ -1,102 +1,99 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 
 class userProvider extends ChangeNotifier{
-  late String _user;
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  User? _user;
+
   late int _id;
   late String _token;
-
-  get http => null;
 
   MyDataProvider() {
   }
 
-  String get user => _user;
+  User? get user => _user;
+  String get token => _token;
   int get id => _id;
 
-  Future<bool> logIn(String username, String password) async {
+  bool isUser(){
+    if (_user != null){
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> handleGoogleSignIn() async {
     try {
-      var response = await http.post(
-        Uri.parse("http://127.0.0.1:8000/login"),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: jsonEncode({
-          "username": username,
-          "password": password
-        }),
-      );
-      print(response);
-      if (response.statusCode == 200) {
-        var responseBody = json.decode(response.body);
-        _token = responseBody['token'];
-        _id = responseBody['id'];
-        _user = username;
-        print('Solicitud exitosa. Respuesta: ${response.body}');
-        return true;
-      } else {
-        print('Error en la solicitud. Código de estado: ${response.statusCode}');
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        // El usuario canceló el inicio de sesión
         return false;
       }
-    } catch (e) {
-      print('Error durante la solicitud: $e');
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential userCredential = await _auth.signInWithCredential(credential);
+      _user = userCredential.user;
+      if (_user != null) {
+        // Inicio de sesión exitoso
+        print (_user);
+        await getToken();
+        return true;
+      } else {
+        // El inicio de sesión falló
+        return false;
+      }
+    } catch (error) {
+      print('Error en el inicio de sesión: $error');
       return false;
     }
   }
-
-  Future<bool> registerUser(String username, String password, String email) async {
+  Future<void> signOut() async {
     try {
-      var response = await http.post(
-        Uri.parse("http://127.0.0.1:8000/register"),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: jsonEncode({
-          "username": username,
-          "password": password,
-          "email": email
-        }),
-      );
-      if (response.statusCode == 200) {
-        var responseBody = json.decode(response.body);
-        _token = responseBody['token'];
-        print('Solicitud exitosa. Respuesta: ${response.body}');
-        return true;
-      } else {
-        print('Error en la solicitud. Código de estado: ${response.statusCode}');
-        return false;
-      }
-    } catch (e) {
-      print('Error durante la solicitud: $e');
-      return false;
+      // Cerrar sesión con FirebaseAuth
+      await _auth.signOut();
+
+      // Cerrar sesión con GoogleSignIn
+      await _googleSignIn.signOut();
+
+      // Notificar a los escuchadores que el estado ha cambiado
+      notifyListeners();
+    } catch (error) {
+      print('Error al cerrar sesión: $error');
     }
   }
 
-  Future<bool> editPassword(String username, String password, String newPassword) async {
+  Future<void> getToken() async {
     try {
       var response = await http.post(
-        Uri.parse("http://127.0.0.1:8000/register"),
+        Uri.parse("https://us-central1-sistemes-multimedia.cloudfunctions.net/myFunction/users/auth"),
         headers: {
           "Content-Type": "application/json",
         },
         body: jsonEncode({
-          "username": username,
-          "password": password,
-          "newPassword": newPassword
+          "email": _user!.email,
         }),
       );
       if (response.statusCode == 200) {
         var responseBody = json.decode(response.body);
         _token = responseBody['token'];
         print('Solicitud exitosa. Respuesta: ${response.body}');
-        return true;
       } else {
         print('Error en la solicitud. Código de estado: ${response.statusCode}');
-        return false;
       }
     } catch (e) {
       print('Error durante la solicitud: $e');
-      return false;
     }
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:BOTANICAPP/start_screen.dart';
 import '../../providers/userProvider.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class ScreenLogIn extends StatefulWidget {
   const ScreenLogIn({super.key});
@@ -16,13 +17,14 @@ class _ScreenLogInState extends State<ScreenLogIn> {
   TextEditingController emailController = TextEditingController();
 
   late String _pass;
-  late String _username;
   late String _email;
   bool _register = false;
 
   @override
   void initState() {
     super.initState();
+    _pass = "";
+    _email = "";
   }
 
   @override
@@ -59,7 +61,6 @@ class _ScreenLogInState extends State<ScreenLogIn> {
               ),
               onChanged: (value) {
                 setState(() {
-                  _username = value;
                 });
               },
             ),
@@ -91,15 +92,7 @@ class _ScreenLogInState extends State<ScreenLogIn> {
                 ),
                 child: const Text('Log In'),
                 onPressed: () {
-                  Provider.of<userProvider>(context, listen: false).logIn(_username, _pass).then((conn) {
-                    if (!conn) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (
-                            context) => ScreenStart()),
-                      );
-                    }
-                  });
+
                 },
               )),
           TextButton(
@@ -111,6 +104,33 @@ class _ScreenLogInState extends State<ScreenLogIn> {
             child: Text(
               'Register',
               style: TextStyle(color: Colors.grey[600]),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            height: 50,
+            child: IconButton(
+              icon: Image.asset('assets/google_logo.png'),
+              onPressed:
+                  () async {
+                bool conn = await Provider.of<userProvider>(context, listen: false).handleGoogleSignIn();
+                if ( conn ) {
+                  Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ScreenStart()),
+                  );
+                }
+              },
             ),
           ),
         ],
@@ -161,7 +181,6 @@ class _ScreenLogInState extends State<ScreenLogIn> {
               ),
               onChanged: (value) {
                 setState(() {
-                  _username = value;
                 });
               },
             ),
@@ -192,17 +211,8 @@ class _ScreenLogInState extends State<ScreenLogIn> {
                   minimumSize: const Size.fromHeight(50),
                 ),
                 child: const Text('Register'),
-                onPressed: () {
-                  Provider.of<userProvider>(context, listen: false).logIn(_email, _pass).then((conn) {
-                    if (conn) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (
-                            context) => ScreenStart()),
-                      );
-                    }
-                  });
-                },
+                onPressed: () {}
+
               )),
           TextButton(
             onPressed: () {
